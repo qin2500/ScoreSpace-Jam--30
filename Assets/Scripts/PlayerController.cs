@@ -60,39 +60,44 @@ public class PlayerController : MonoBehaviour
             Vector2 movementVelocity = tangentialDirection * speed * x;
 
             // Preserve the vertical component of the velocity
-            if(x > 0)
-            {
-                if(!moving)
-                {
-                    m_rigidbody.velocity += movementVelocity;
-                    moving = true;
-                }
-                else
-                {
-                    //Currently Traveling in toward the left
-                    if(!facingRight)
-                    {
-                        facingRight = true;
-                        m_rigidbody.velocity = Vector2.zero;
-                        m_rigidbody.velocity += movementVelocity;
-                    }
-                }
+            //if(x > 0)
+            //{
+            //    if(!moving)
+            //    {
+            //        m_rigidbody.velocity += movementVelocity;
+            //        moving = true;
+            //    }
+            //    else
+            //    {
+            //        //Currently Traveling in toward the left
+            //        if(!facingRight)
+            //        {
+            //            facingRight = true;
+            //            m_rigidbody.velocity = Vector2.zero;
+            //            m_rigidbody.velocity += movementVelocity;
+            //        }
+            //    }
                 
-            }
-            else if(x < 0)
+            //}
+            //else if(x < 0)
+            //{
+            //    if (!moving)
+            //    {
+            //        m_rigidbody.velocity += movementVelocity;
+            //        moving = true;
+            //    }
+            //    //Currently Traveling in toward the right
+            //    if (facingRight)
+            //    {
+            //        facingRight = false;
+            //        m_rigidbody.velocity = Vector2.zero;
+            //        m_rigidbody.velocity += movementVelocity;
+            //    }
+            //}
+            if(x != 0)
             {
-                if (!moving)
-                {
-                    m_rigidbody.velocity += movementVelocity;
-                    moving = true;
-                }
-                //Currently Traveling in toward the right
-                if (facingRight)
-                {
-                    facingRight = false;
-                    m_rigidbody.velocity = Vector2.zero;
-                    m_rigidbody.velocity += movementVelocity;
-                }
+                m_rigidbody.velocity = Vector2.zero;
+                m_rigidbody.velocity += movementVelocity;
             }
             else
             {

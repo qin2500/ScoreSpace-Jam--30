@@ -66,7 +66,7 @@ public class GravityObject : MonoBehaviour
         {
             float prevDistance = ((Vector2)currentAttractor.planetTransform.position - m_rigidbody.position).magnitude;
             if(distance < prevDistance)
-                currentAttractor = attractor;
+                currentAttractor = attractor;   
         }
 
     }
