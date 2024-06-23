@@ -21,7 +21,7 @@ public class GravityFeild : MonoBehaviour
 
     private void Awake()
     {
-        gravityFieldVisualizer.transform.localScale = new Vector3(effectionRadius, effectionRadius, gravityFieldVisualizer.transform.localScale.z);
+        gravityFieldVisualizer.transform.localScale = new Vector3(effectionRadius * 2, effectionRadius *2, gravityFieldVisualizer.transform.localScale.z);
 
         planetTransform = GetComponent<Transform>();
     }
