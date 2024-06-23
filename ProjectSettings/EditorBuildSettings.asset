@@ -24,6 +24,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Player Controller.unity
     guid: 3a2b2b219aecd0f4daa3344e6dc2092a
   - enabled: 1
+    path: Assets/Scenes/PauseMenu.unity
+    guid: e485ea9750e855544a6afe490587e862
+  - enabled: 1
     path: Assets/Scenes/Credits.unity
     guid: cae22b86ffe66dd4e936d3f9b99a2c13
   m_configObjects: {}
