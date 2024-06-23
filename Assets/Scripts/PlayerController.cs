@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask planetLayer;
     [SerializeField] Animator animator;
     [SerializeField] GameObject playerSprite;
+    [SerializeField] GameObject death;
+
+    public UnityEvent onDeath;
     bool isGrounded;
 
     Rigidbody2D m_rigidbody;
@@ -92,6 +96,19 @@ public class PlayerController : MonoBehaviour
             float y = Input.GetAxisRaw("Vertical");
 
             m_rigidbody.AddForce(new Vector2(x, y).normalized * speed * 0.2f);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag.Equals("Death Zone"))
+        {
+            this.gameObject.SetActive(false);
+            Instantiate(death, transform.position, transform.rotation);
+            if(onDeath != null)
+            {
+                onDeath.Invoke();
+            }
         }
     }
     private void flip()
