@@ -23,4 +23,11 @@ public class levelSelector : MonoBehaviour
         SceneManager.UnloadSceneAsync("LevelSelector");
         SceneManager.UnloadSceneAsync("MainMenu");
     }
+
+    public void mainMenu()
+    {
+        SceneManager.UnloadSceneAsync(SceneNames.MAINMENU);
+        SceneManager.UnloadSceneAsync(SceneNames.LEVELSELECTOR);
+        SceneManager.LoadSceneAsync("MainMenu", mode: LoadSceneMode.Additive);
+    }
 }

@@ -175,7 +175,7 @@ public class LevelManager : MonoBehaviour
         
     }
 
-    private void togglePauseMenu()
+    public void togglePauseMenu()
     {
         if (GlobalEvents.PlayerPause.Invoked())
         {
