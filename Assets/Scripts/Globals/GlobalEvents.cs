@@ -7,8 +7,11 @@ public static class GlobalEvents
 {
     private static Event _playerDeath = new("player death", "indicates if player has died on current level");
     private static Event _levelComplete = new("level complete", "indicates if player has completed current level");
+    private static Event _playerPause = new("pause", "indicates if player has paused the game");
+
 
     public static Event PlayerDeath { get { return _playerDeath; }}
+    public static Event PlayerPause { get { return _playerPause; } }
     public static Event LevelComplete { get { return _levelComplete; }}
 
 }

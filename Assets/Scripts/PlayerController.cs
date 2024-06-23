@@ -26,7 +26,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if(gravityObject.getCurrentAttractor() != null)
+        if (GlobalEvents.PlayerPause.Invoked()) { return; }
+
+        if (gravityObject.getCurrentAttractor() != null)
         {
             RaycastHit2D hit = Physics2D.Raycast(feet.transform.position, (Vector2)gravityObject.getCurrentAttractor().planetTransform.position - m_rigidbody.position, 10, planetLayer);
             if (hit.collider != null && hit.distance <= 0.05f)
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (GlobalEvents.PlayerPause.Invoked()) { return; }
         if (gravityObject.getCurrentAttractor() != null && isGrounded)
         {
             float x = Input.GetAxisRaw("Horizontal");

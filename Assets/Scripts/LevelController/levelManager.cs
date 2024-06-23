@@ -17,6 +17,11 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         setLevel(1);
+        //reset globals
+
+        GlobalEvents.PlayerPause.uninvoke();
+        GlobalEvents.PlayerDeath.uninvoke();
+        GlobalEvents.LevelComplete.uninvoke();
     }
 
     // Update is called once per frame
@@ -43,9 +48,25 @@ public class LevelManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             restartLevel();
-        }else if (Input.GetKeyDown(KeyCode.Q))
+        }
+        else if (Input.GetKeyDown(KeyCode.Q))
         {
             loadMainMenu();
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            //pause button
+            if (GlobalEvents.PlayerPause.Invoked())
+            {
+                unpauseTimer();
+                GlobalEvents.PlayerPause.uninvoke();
+            }
+            else
+            {
+                pauseTimer();
+                GlobalEvents.PlayerPause.invoke();
+            }
+
         }
 
         if (_timerActive)
