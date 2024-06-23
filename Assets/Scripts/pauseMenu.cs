@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class endzone : MonoBehaviour
+public class pauseMenu : MonoBehaviour
 {
     // Start is called before the first frame update
-
     void Start()
     {
         
@@ -17,10 +17,9 @@ public class endzone : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void resume()
     {
-        //hooray level complete
-        Debug.Log("Collision with endzone detected. Level completed.");
-        GlobalEvents.LevelComplete.invoke();
+        SceneManager.UnloadSceneAsync("PauseMenu");
+        GlobalEvents.PlayerPause.uninvoke();
     }
 }
