@@ -17,7 +17,7 @@ public class endzone : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         //hooray level complete
         Debug.Log("Collision with endzone detected. Level completed.");

@@ -9,19 +9,36 @@ public class LevelManager : MonoBehaviour
 {
 
     private int _level = 0;
-    private bool _timerActive;
+    private bool _timerActive = false;
     private float _currentTime;
     [SerializeField] private TMP_Text _text;
+
+
+    private void Awake()
+    {
+        GlobalReferences.LEVELMANAGER = this;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        setLevel(1);
+        //reset globals
+
+        GlobalEvents.PlayerPause.uninvoke();
+        GlobalEvents.PlayerDeath.uninvoke();
+        GlobalEvents.LevelComplete.uninvoke();
+        GlobalEvents.PlayerStartedMoving.uninvoke();
+        GlobalEvents.FullPlaythroughInProgress.uninvoke();
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (GlobalEvents.PlayerStartedMoving.Invoked() && !GlobalEvents.PlayerPause.Invoked())
+        {
+            _timerActive = true;
+        }
 
 
         if (GlobalEvents.PlayerDeath.Invoked())
@@ -40,12 +57,20 @@ public class LevelManager : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && !GlobalEvents.PlayerPause.Invoked())
         {
             restartLevel();
-        }else if (Input.GetKeyDown(KeyCode.Q))
+        }
+        else if (Input.GetKeyDown(KeyCode.Q))
         {
+            if (GlobalEvents.PlayerPause.Invoked()) togglePauseMenu();
             loadMainMenu();
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            //pause button
+            togglePauseMenu();
+
         }
 
         if (_timerActive)
@@ -54,7 +79,7 @@ public class LevelManager : MonoBehaviour
         }
 
         TimeSpan time = TimeSpan.FromSeconds(_currentTime);
-        _text.text = time.Minutes + "" + time.Seconds + ":" + time.Milliseconds;
+        _text.text = time.Minutes + ":" + time.Seconds + ":" + time.Milliseconds;
 
         
     }
@@ -102,6 +127,24 @@ public class LevelManager : MonoBehaviour
     public void completeLevel() 
     {
         //stop counting time and turn it into score then add to leaderboard
+
+
+        
+        pauseTimer();
+        int score = LeaderBoardGateway.convertTimestampToScore(_currentTime);
+
+
+        // if single level then add to leaderboard for level
+        if (!GlobalEvents.FullPlaythroughInProgress.Invoked())
+        {
+            LeaderBoardGateway.SubmitScore(levelString(), GlobalReferences.PLAYER.Username, score);
+            loadMainMenu();
+            return;
+        }
+
+        //if full playthrough add to overall leaderboard
+        GlobalReferences.PLAYER.Score += score;
+        LeaderBoardGateway.SubmitScore("level1", GlobalReferences.PLAYER.Username, GlobalReferences.PLAYER.Score);
         incrementLevel(); 
     }
 
@@ -111,7 +154,7 @@ public class LevelManager : MonoBehaviour
     public void resetTimer()
     {
         _currentTime = 0;
-        unpauseTimer();
+        GlobalEvents.PlayerStartedMoving.uninvoke();
     }
 
     public bool isTimerPaused() { return !_timerActive; }
@@ -124,4 +167,25 @@ public class LevelManager : MonoBehaviour
         
     }
 
+    private void togglePauseMenu()
+    {
+        if (GlobalEvents.PlayerPause.Invoked())
+        {
+            if (GlobalEvents.PlayerStartedMoving.Invoked())
+                unpauseTimer();
+            SceneManager.UnloadSceneAsync("PauseMenu");
+            GlobalEvents.PlayerPause.uninvoke();
+        }
+        else
+        {
+            pauseTimer();
+            SceneManager.LoadSceneAsync("PauseMenu", mode:LoadSceneMode.Additive);
+            GlobalEvents.PlayerPause.invoke();
+        }
+    }
+
+    private string levelString()
+    {
+        return "level" + this._level;
+    }
 }

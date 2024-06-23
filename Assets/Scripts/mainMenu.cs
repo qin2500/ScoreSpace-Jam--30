@@ -25,8 +25,18 @@ public class mainMenu : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadSceneAsync("LevelController", mode: LoadSceneMode.Additive);
-        SceneManager.UnloadSceneAsync("MainMenu");
+        GlobalEvents.FullPlaythroughInProgress.invoke();
+        SceneManager.LoadSceneAsync("NameSelector", mode: LoadSceneMode.Additive);
+        playButton.SetActive(false);
+        creditsButton.SetActive(false);
+    }
+
+    public void levelSelector()
+    {
+        GlobalEvents.FullPlaythroughInProgress.uninvoke();
+        SceneManager.LoadSceneAsync("NameSelector", mode: LoadSceneMode.Additive);
+        playButton.SetActive(false);
+        creditsButton.SetActive(false);
     }
 
     public void loadCredits()
