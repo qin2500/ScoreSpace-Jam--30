@@ -829,7 +829,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: d351a8688899f7a4a8040e1646b69aec, type: 3}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEditor.Audio.AudioMixerGroupController, UnityEditor.CoreModule
         m_MethodName: 
         m_Mode: 1
@@ -1781,7 +1781,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 24300002, guid: 11647b7f2b5a44442b8881c303d93f73, type: 2}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEditor.Audio.AudioMixerGroupController, UnityEditor.CoreModule
         m_MethodName: 
         m_Mode: 1
@@ -2382,7 +2382,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1033785259003944835, guid: 11647b7f2b5a44442b8881c303d93f73, type: 2}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEditor.Audio.AudioMixerGroupController, UnityEditor.CoreModule
         m_MethodName: 
         m_Mode: 1
