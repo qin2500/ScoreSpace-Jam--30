@@ -5,31 +5,25 @@ using LootLocker.Admin;
 using LootLocker.Requests;
 using LootLocker.LootLockerEnums;
 using LootLocker.Extension;
+using System;
 
 
 
 
 //just meant to hold leaderboard API stuff
 
-public class LeaderBoardGateway : MonoBehaviour
+public static class LeaderBoardGateway
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     const int PAGESIZE = 50;
 
 
 
-    public void SubmitScore(string leaderboardKey, string memberID, int score)
+    public static int convertTimestampToScore(float timestamp)
+    {
+        return TimeSpan.Parse("0:10:0:0").Milliseconds - (int)timestamp;
+    }
+
+    public static void SubmitScore(string leaderboardKey, string memberID, int score)
     {
         LootLockerSDKManager.SubmitScore(memberID, score, leaderboardKey, (response) =>
         {
@@ -45,7 +39,7 @@ public class LeaderBoardGateway : MonoBehaviour
     }
 
 
-    public void getLeaderBoardEntries(string leaderboardKey, int page=0)
+    public static void getLeaderBoardEntries(string leaderboardKey, int page=0)
     {
         int count = 50;
 
@@ -64,7 +58,7 @@ public class LeaderBoardGateway : MonoBehaviour
         });
     }
 
-    public void getLeaderBoardEntry(string leaderboardKey, string memberID)
+    public static void getLeaderBoardEntry(string leaderboardKey, string memberID)
     {
         Debug.Log("gettingLeaderBoardEntry");
         LootLockerSDKManager.GetMemberRank(leaderboardKey, memberID, (response) =>

@@ -13,16 +13,22 @@ public class LevelManager : MonoBehaviour
     private float _currentTime;
     [SerializeField] private TMP_Text _text;
 
+
+    private void Awake()
+    {
+        GlobalReferences.LEVELMANAGER = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        setLevel(1);
         //reset globals
 
         GlobalEvents.PlayerPause.uninvoke();
         GlobalEvents.PlayerDeath.uninvoke();
         GlobalEvents.LevelComplete.uninvoke();
         GlobalEvents.PlayerStartedMoving.uninvoke();
+        GlobalEvents.FullPlaythroughInProgress.uninvoke();
     }
 
     // Update is called once per frame
@@ -121,6 +127,24 @@ public class LevelManager : MonoBehaviour
     public void completeLevel() 
     {
         //stop counting time and turn it into score then add to leaderboard
+
+
+        
+        pauseTimer();
+        int score = LeaderBoardGateway.convertTimestampToScore(_currentTime);
+
+
+        // if single level then add to leaderboard for level
+        if (!GlobalEvents.FullPlaythroughInProgress.Invoked())
+        {
+            LeaderBoardGateway.SubmitScore(levelString(), GlobalReferences.PLAYER.Username, score);
+            loadMainMenu();
+            return;
+        }
+
+        //if full playthrough add to overall leaderboard
+        GlobalReferences.PLAYER.Score += score;
+        LeaderBoardGateway.SubmitScore("level1", GlobalReferences.PLAYER.Username, GlobalReferences.PLAYER.Score);
         incrementLevel(); 
     }
 
@@ -158,5 +182,10 @@ public class LevelManager : MonoBehaviour
             SceneManager.LoadSceneAsync("PauseMenu", mode:LoadSceneMode.Additive);
             GlobalEvents.PlayerPause.invoke();
         }
+    }
+
+    private string levelString()
+    {
+        return "level" + this._level;
     }
 }
