@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (GlobalEvents.PlayerPause.Invoked()) { return; }
+
         if (gravityObject.getCurrentAttractor() != null)
         {
             RaycastHit2D hit = Physics2D.Raycast(feet.transform.position, (Vector2)gravityObject.getCurrentAttractor().planetTransform.position - m_rigidbody.position, 10, planetLayer);
@@ -47,12 +49,15 @@ public class PlayerController : MonoBehaviour
         {
             jumpRequested = true;
         }
-
-
     }
 
     private void FixedUpdate()
     {
+        if (GlobalEvents.PlayerPause.Invoked()) 
+        { 
+            m_rigidbody.velocity = Vector2.zero;
+            return; 
+        }
         if (gravityObject.getCurrentAttractor() != null && isGrounded)
         {
             float x = Input.GetAxisRaw("Horizontal");
@@ -73,6 +78,8 @@ public class PlayerController : MonoBehaviour
                 m_rigidbody.velocity = Vector2.zero;
                 m_rigidbody.velocity += movementVelocity;
                 animator.Play("walk");
+
+                GlobalEvents.PlayerStartedMoving.invoke();
             }
             else
             {
@@ -87,6 +94,9 @@ public class PlayerController : MonoBehaviour
                 m_rigidbody.AddForce(jumpDirection * jumpForce, ForceMode2D.Impulse);
                 jumpRequested = false;
                 animator.Play("jump");
+
+                GlobalEvents.PlayerStartedMoving.invoke();
+
             }
 
         }
@@ -118,6 +128,11 @@ public class PlayerController : MonoBehaviour
         scaler.x *= -1;
         playerSprite.transform.localScale = scaler;
 
+    }
+
+    public void shineKudasai()
+    {
+        GlobalEvents.PlayerDeath.invoke();
     }
 }
 

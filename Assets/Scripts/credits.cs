@@ -20,6 +20,7 @@ public class credits : MonoBehaviour
 
     public void reopenMainMenu()
     {
+        SceneManager.UnloadSceneAsync("MainMenu");
         SceneManager.LoadSceneAsync("MainMenu", mode: LoadSceneMode.Additive);
         SceneManager.UnloadSceneAsync("Credits");
     }
