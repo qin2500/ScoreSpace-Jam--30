@@ -41,5 +41,5 @@ Material:
     - _QueueControl: 0
     m_Colors:
     - _Fresnel_Effect: {r: 28.51895, g: 28.51895, b: 28.51895, a: 0}
-    - _Main_Color: {r: 0, g: 0.09392205, b: 0.2028302, a: 0}
+    - _Main_Color: {r: 0, g: 0.08336023, b: 0.270913, a: 0}
   m_BuildTextureStacks: []
