@@ -20,9 +20,12 @@ public class nameSelector : MonoBehaviour
 
             if (GlobalEvents.FullPlaythroughInProgress.Invoked())
             {
-                SceneManager.LoadSceneAsync(SceneNames.LEVELCONTROLLER, mode: LoadSceneMode.Additive);
-                GlobalReferences.LEVELMANAGER.setLevel(1);
+                SceneManager.LoadSceneAsync(SceneNames.LEVELCONTROLLER, mode: LoadSceneMode.Additive).completed += (asyncOperation) =>
+                {
+                    GlobalReferences.LEVELMANAGER.setLevel(1);
+                };
             }
+            SceneManager.UnloadSceneAsync(SceneNames.MAINMENU);
             SceneManager.LoadSceneAsync(SceneNames.LEVELSELECTOR, mode:LoadSceneMode.Additive);
 
         }
