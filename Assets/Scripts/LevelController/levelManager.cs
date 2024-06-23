@@ -133,6 +133,7 @@ public class LevelManager : MonoBehaviour
         pauseTimer();
         int score = LeaderBoardGateway.convertTimestampToScore(_currentTime);
 
+        Debug.Log("Level completed, score is: " + score);
 
         // if single level then add to leaderboard for level
         if (!GlobalEvents.FullPlaythroughInProgress.Invoked())
