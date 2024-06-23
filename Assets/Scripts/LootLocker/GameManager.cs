@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LootLocker.Requests;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,12 +12,14 @@ public class GameManager : MonoBehaviour
         {
             if (!response.success)
             {
-                Debug.Log("error starting LootLocker session");
+                Debug.Log("error starting LootLocker session:\n" + response.errorData);
 
                 return;
             }
 
             Debug.Log("successfully started LootLocker session");
         });
+
+        SceneManager.LoadSceneAsync("MainMenu", mode: LoadSceneMode.Additive);
     }
 }
