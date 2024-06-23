@@ -24,8 +24,10 @@ public class nameSelector : MonoBehaviour
                 {
                     GlobalReferences.LEVELMANAGER.setLevel(1);
                 };
+                SceneManager.UnloadSceneAsync(SceneNames.MAINMENU);
+                return;
             }
-            SceneManager.UnloadSceneAsync(SceneNames.MAINMENU);
+            //SceneManager.UnloadSceneAsync(SceneNames.MAINMENU);
             SceneManager.LoadSceneAsync(SceneNames.LEVELSELECTOR, mode:LoadSceneMode.Additive);
 
         }

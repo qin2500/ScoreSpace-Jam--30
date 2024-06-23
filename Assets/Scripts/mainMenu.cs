@@ -8,41 +8,35 @@ public class mainMenu : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    [SerializeField] GameObject playButton;
-    [SerializeField] GameObject creditsButton;
+    [SerializeField] GameObject main;
+    //[SerializeField] GameObject levelSelect;
+    //[SerializeField] GameObject credits;
 
+    GameObject currentlyActive;
 
-    void Start()
+    private void Awake()
     {
-        
+        currentlyActive = main;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Play()
     {
         GlobalEvents.FullPlaythroughInProgress.invoke();
         SceneManager.LoadSceneAsync("NameSelector", mode: LoadSceneMode.Additive);
-        playButton.SetActive(false);
-        creditsButton.SetActive(false);
+        currentlyActive.SetActive(false);
+        
     }
 
     public void levelSelector()
     {
         GlobalEvents.FullPlaythroughInProgress.uninvoke();
         SceneManager.LoadSceneAsync("NameSelector", mode: LoadSceneMode.Additive);
-        playButton.SetActive(false);
-        creditsButton.SetActive(false);
+        currentlyActive.SetActive(false);
+
     }
 
     public void loadCredits()
     {
-        playButton.SetActive(false);
-        creditsButton.SetActive(false);
+        currentlyActive.SetActive(false);
         SceneManager.LoadSceneAsync("Credits", mode: LoadSceneMode.Additive);
     }
 }
