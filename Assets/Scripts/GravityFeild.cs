@@ -8,11 +8,12 @@ public class GravityFeild : MonoBehaviour
     public LayerMask attractionLayer;
     public float gravity = -10;
     [SerializeField] private float effectionRadius = 10;
+    public GameObject gravityFieldVisualizer;
     [HideInInspector] public Transform planetTransform;
 
     public List<Collider2D> attractedObjects = new List<Collider2D>();
 
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, effectionRadius);
@@ -20,6 +21,8 @@ public class GravityFeild : MonoBehaviour
 
     private void Awake()
     {
+        gravityFieldVisualizer.transform.localScale = new Vector3(effectionRadius, effectionRadius, gravityFieldVisualizer.transform.localScale.z);
+
         planetTransform = GetComponent<Transform>();
     }
     public void Update()

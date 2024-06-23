@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -8,20 +10,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpForce = 2f;
     [SerializeField] GameObject feet;
     [SerializeField] LayerMask planetLayer;
-    [SerializeField] bool isGrounded;
+    [SerializeField] Animator animator;
+    [SerializeField] GameObject playerSprite;
+    [SerializeField] GameObject death;
+
+    public UnityEvent onDeath;
+    bool isGrounded;
 
     Rigidbody2D m_rigidbody;
     GravityObject gravityObject;
 
-    [SerializeField] bool moving;
-    [SerializeField] bool facingRight;
+    bool facingRight = true;
     bool jumpRequested;
 
 
     private void Awake()
     {
-        m_rigidbody= GetComponent<Rigidbody2D>();
+        m_rigidbody = GetComponent<Rigidbody2D>();
         gravityObject = GetComponent<GravityObject>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -38,11 +45,11 @@ public class PlayerController : MonoBehaviour
             else isGrounded = false;
         }
 
-        if(isGrounded && Input.GetButtonDown("Jump"))
+        if (isGrounded && Input.GetButtonDown("Jump"))
         {
             jumpRequested = true;
         }
-        
+
 
     }
 
@@ -62,45 +69,18 @@ public class PlayerController : MonoBehaviour
             // Apply horizontal movement
             Vector2 movementVelocity = tangentialDirection * speed * x;
 
-            // Preserve the vertical component of the velocity
-            if(x > 0)
+            if (x != 0)
             {
-                if(!moving)
-                {
-                    m_rigidbody.velocity += movementVelocity;
-                    moving = true;
-                }
-                else
-                {
-                    //Currently Traveling in toward the left
-                    if(!facingRight)
-                    {
-                        facingRight = true;
-                        m_rigidbody.velocity = Vector2.zero;
-                        m_rigidbody.velocity += movementVelocity;
-                    }
-                }
-                
-            }
-            else if(x < 0)
-            {
-                if (!moving)
-                {
-                    m_rigidbody.velocity += movementVelocity;
-                    moving = true;
-                }
-                //Currently Traveling in toward the right
-                if (facingRight)
-                {
-                    facingRight = false;
-                    m_rigidbody.velocity = Vector2.zero;
-                    m_rigidbody.velocity += movementVelocity;
-                }
+                if (x > 0 && !facingRight) flip();
+                else if (x < 0 && facingRight) flip();
+                m_rigidbody.velocity = Vector2.zero;
+                m_rigidbody.velocity += movementVelocity;
+                animator.Play("walk");
             }
             else
             {
                 m_rigidbody.velocity = Vector2.zero;
-                moving = false;
+                animator.Play("Idle");
             }
 
 
@@ -109,10 +89,11 @@ public class PlayerController : MonoBehaviour
                 Vector2 jumpDirection = -toPlanetCenter.normalized;
                 m_rigidbody.AddForce(jumpDirection * jumpForce, ForceMode2D.Impulse);
                 jumpRequested = false;
+                animator.Play("jump");
             }
 
         }
-        else if(!isGrounded)
+        else if (!isGrounded)
         {
             float x = Input.GetAxisRaw("Horizontal");
             float y = Input.GetAxisRaw("Vertical");
@@ -120,4 +101,27 @@ public class PlayerController : MonoBehaviour
             m_rigidbody.AddForce(new Vector2(x, y).normalized * speed * 0.2f);
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag.Equals("Death Zone"))
+        {
+            this.gameObject.SetActive(false);
+            Instantiate(death, transform.position, transform.rotation);
+            if(onDeath != null)
+            {
+                onDeath.Invoke();
+            }
+        }
+    }
+    private void flip()
+    {
+        facingRight = !facingRight;
+        Vector3 scaler = playerSprite.transform.localScale;
+        scaler.x *= -1;
+        playerSprite.transform.localScale = scaler;
+
+    }
 }
+
+    
