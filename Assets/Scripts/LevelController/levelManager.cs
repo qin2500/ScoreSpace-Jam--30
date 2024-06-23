@@ -143,8 +143,15 @@ public class LevelManager : MonoBehaviour
         }
 
         //if full playthrough add to overall leaderboard
+        LeaderBoardGateway.SubmitScore(levelString(), GlobalReferences.PLAYER.Username, score);
         GlobalReferences.PLAYER.Score += score;
-        LeaderBoardGateway.SubmitScore("level1", GlobalReferences.PLAYER.Username, GlobalReferences.PLAYER.Score);
+
+        if (this._level == GlobalReferences.NUMBEROFLEVELS)
+        {
+            LeaderBoardGateway.SubmitScore("fullPlaythrough", GlobalReferences.PLAYER.Username, GlobalReferences.PLAYER.Score);
+            loadMainMenu();
+            return;
+        }
         incrementLevel(); 
     }
 
