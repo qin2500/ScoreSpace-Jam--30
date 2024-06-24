@@ -20,12 +20,12 @@ public static class LeaderBoardGateway
 
     public static int convertTimestampToScore(float timestamp)
     {
-        return TimeSpan.Parse("0:10:0:0").Milliseconds - (int)timestamp;
+        return (int) (TimeSpan.Parse("0:10:0:0").TotalMilliseconds - TimeSpan.FromMilliseconds(timestamp).TotalMilliseconds);
     }
 
     public static void SubmitScore(string leaderboardKey, string memberID, int score)
     {
-        LootLockerSDKManager.SubmitScore(memberID, score, leaderboardKey, (response) =>
+        LootLockerSDKManager.SubmitScore(memberID, score, leaderboardKey, memberID, (response) =>
         {
             if (!response.success)
             {
@@ -39,7 +39,7 @@ public static class LeaderBoardGateway
     }
 
 
-    public static void getLeaderBoardEntries(string leaderboardKey, int page=0)
+    public static void getLeaderBoardEntries(string leaderboardKey, System.Action<LootLockerLeaderboardMember[]> callback, int page = 0)
     {
         int count = 50;
 
@@ -55,6 +55,8 @@ public static class LeaderBoardGateway
                 return;
             }
             Debug.Log("Successfully got score list!");
+            callback(response.items);
+            return;
         });
     }
 
