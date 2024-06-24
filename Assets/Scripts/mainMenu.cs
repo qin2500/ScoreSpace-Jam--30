@@ -8,8 +8,7 @@ public class mainMenu : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    [SerializeField] GameObject playButton;
-    [SerializeField] GameObject creditsButton;
+    [SerializeField] GameObject canvas;
 
 
     void Start()
@@ -27,22 +26,31 @@ public class mainMenu : MonoBehaviour
     {
         GlobalEvents.FullPlaythroughInProgress.invoke();
         SceneManager.LoadSceneAsync("NameSelector", mode: LoadSceneMode.Additive);
-        playButton.SetActive(false);
-        creditsButton.SetActive(false);
+        hideAssets();
     }
 
     public void levelSelector()
     {
         GlobalEvents.FullPlaythroughInProgress.uninvoke();
         SceneManager.LoadSceneAsync("NameSelector", mode: LoadSceneMode.Additive);
-        playButton.SetActive(false);
-        creditsButton.SetActive(false);
+        hideAssets();
     }
 
     public void loadCredits()
     {
-        playButton.SetActive(false);
-        creditsButton.SetActive(false);
+        hideAssets();
         SceneManager.LoadSceneAsync("Credits", mode: LoadSceneMode.Additive);
+    }
+
+    public void loadLeaderBoard()
+    {
+        hideAssets();
+        SceneManager.LoadSceneAsync(SceneNames.LEADERBOARD, mode: LoadSceneMode.Additive);
+
+    }
+
+    private void hideAssets()
+    {
+        canvas.SetActive(false);
     }
 }

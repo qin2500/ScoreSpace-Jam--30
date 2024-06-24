@@ -149,7 +149,7 @@ public class LevelManager : MonoBehaviour
 
         if (this._level == GlobalReferences.NUMBEROFLEVELS)
         {
-            LeaderBoardGateway.SubmitScore("fullPlaythrough", GlobalReferences.PLAYER.Username, GlobalReferences.PLAYER.Score);
+            LeaderBoardGateway.SubmitScore("Any%", GlobalReferences.PLAYER.Username, GlobalReferences.PLAYER.Score);
             loadMainMenu();
             return;
         }
@@ -173,6 +173,14 @@ public class LevelManager : MonoBehaviour
         SceneManager.LoadSceneAsync("MainMenu", mode: LoadSceneMode.Additive);
         SceneManager.UnloadSceneAsync("LevelController");
         
+    }
+
+    public void loadLeaderboard()
+    {
+        unloadLevel();
+        SceneManager.LoadSceneAsync(SceneNames.LEADERBOARD, mode: LoadSceneMode.Additive);
+        SceneManager.UnloadSceneAsync("LevelController");
+
     }
 
     private void togglePauseMenu()
