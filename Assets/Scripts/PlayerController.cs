@@ -12,9 +12,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] GameObject playerSprite;
     [SerializeField] GameObject death;
+    [SerializeField] AudioClip deathSound;
+    [SerializeField] AudioClip jumpSound;
+    [SerializeField] AudioClip landedSound;
 
     public UnityEvent onDeath;
     bool isGrounded;
+    bool playedSound = false;
     public bool isMoving = false;
 
     Rigidbody2D m_rigidbody;
@@ -42,6 +46,11 @@ public class PlayerController : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(feet.transform.position, (Vector2)gravityObject.getCurrentAttractor().planetTransform.position - m_rigidbody.position, 10, planetLayer);
             if (hit.collider != null && hit.distance <= 0.05f )
             {
+                if(playedSound == false){
+                    SoundFXManager.instance.PlaySoundFXClip(landedSound, transform, 1f);
+                    playedSound = true;
+                }
+                
                 isGrounded = true;
             }
             else isGrounded = false;
@@ -84,7 +93,7 @@ public class PlayerController : MonoBehaviour
                     isMoving= true;
                 }
                 animator.Play("walk");
-
+                
                 GlobalEvents.PlayerStartedMoving.invoke();
             }
             else
@@ -100,8 +109,9 @@ public class PlayerController : MonoBehaviour
                 Vector2 jumpDirection = -toPlanetCenter.normalized;
                 m_rigidbody.AddForce(jumpDirection * jumpForce, ForceMode2D.Impulse);
                 jumpRequested = false;
+                playedSound = false;
                 animator.Play("jump");
-
+                SoundFXManager.instance.PlaySoundFXClip(jumpSound, transform, 1f);
                 GlobalEvents.PlayerStartedMoving.invoke();
 
             }
@@ -113,8 +123,11 @@ public class PlayerController : MonoBehaviour
             float y = Input.GetAxisRaw("Vertical");
 
             m_rigidbody.AddForce(new Vector2(x, y).normalized * speed * 0.5f);
+
             isMoving = false;
         }
+
+  
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -124,7 +137,9 @@ public class PlayerController : MonoBehaviour
             this.gameObject.SetActive(false);
             Instantiate(death, transform.position, transform.rotation);
             if(onDeath != null)
-            {
+            {    
+                SoundFXManager.instance.PlaySoundFXClip(deathSound, transform, 1f);
+
                 Invoke("incokeDeath", 1.0f);
             }
         }
