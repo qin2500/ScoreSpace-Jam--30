@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
         if (gravityObject.getCurrentAttractor() != null)
         {
             RaycastHit2D hit = Physics2D.Raycast(feet.transform.position, (Vector2)gravityObject.getCurrentAttractor().planetTransform.position - m_rigidbody.position, 10, planetLayer);
-            if (hit.collider != null && hit.distance <= 0.05f)
+            if (hit.collider != null && hit.distance <= 0.05f )
             {
                 if(playedSound == false){
                     SoundFXManager.instance.PlaySoundFXClip(landedSound, transform, 1f);
@@ -121,8 +121,9 @@ public class PlayerController : MonoBehaviour
         {
             float x = Input.GetAxisRaw("Horizontal");
             float y = Input.GetAxisRaw("Vertical");
-    
-            m_rigidbody.AddForce(new Vector2(x, y).normalized * speed * 0.2f);
+
+            m_rigidbody.AddForce(new Vector2(x, y).normalized * speed * 0.5f);
+
             isMoving = false;
         }
 
