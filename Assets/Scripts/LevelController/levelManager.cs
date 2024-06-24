@@ -28,7 +28,10 @@ public class LevelManager : MonoBehaviour
         GlobalEvents.PlayerDeath.uninvoke();
         GlobalEvents.LevelComplete.uninvoke();
         GlobalEvents.PlayerStartedMoving.uninvoke();
+<<<<<<< HEAD
         //GlobalEvents.FullPlaythroughInProgress.uninvoke();
+=======
+>>>>>>> cb1fb91b87be85ae9616a449223ff5d896e7a540
     }
 
     // Update is called once per frame
@@ -151,7 +154,7 @@ public class LevelManager : MonoBehaviour
 
         if (this._level == GlobalReferences.NUMBEROFLEVELS)
         {
-            LeaderBoardGateway.SubmitScore("fullPlaythrough", GlobalReferences.PLAYER.Username, GlobalReferences.PLAYER.Score);
+            LeaderBoardGateway.SubmitScore("Any%", GlobalReferences.PLAYER.Username, GlobalReferences.PLAYER.Score);
             loadMainMenu();
             Debug.Log("Currnet Level: " + this._level);
             return;
@@ -178,7 +181,19 @@ public class LevelManager : MonoBehaviour
         
     }
 
+<<<<<<< HEAD
     public void togglePauseMenu()
+=======
+    public void loadLeaderboard()
+    {
+        unloadLevel();
+        SceneManager.LoadSceneAsync(SceneNames.LEADERBOARD, mode: LoadSceneMode.Additive);
+        SceneManager.UnloadSceneAsync("LevelController");
+
+    }
+
+    private void togglePauseMenu()
+>>>>>>> cb1fb91b87be85ae9616a449223ff5d896e7a540
     {
         if (GlobalEvents.PlayerPause.Invoked())
         {
