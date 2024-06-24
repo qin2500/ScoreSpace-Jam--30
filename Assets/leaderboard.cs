@@ -28,7 +28,9 @@ public class leaderboard : MonoBehaviour
             leaderboards[i] = "level" + i;
         }
 
-        prevButton.SetActive(false);
+        if (leaderboardIndex == 0)prevButton.SetActive(false);
+        else if (leaderboardIndex == GlobalReferences.NUMBEROFLEVELS) nextButton.SetActive(false);
+
         viewLeaderBoard(leaderboardIndex);
 
     }
@@ -96,8 +98,13 @@ public class leaderboard : MonoBehaviour
         GlobalReferences.initalLeaderboardIndex = 0;
         SceneManager.UnloadSceneAsync(SceneNames.LEADERBOARD);
         if (!GlobalEvents.PlayerStartedMoving.Invoked()) SceneManager.UnloadSceneAsync(SceneNames.MAINMENU);
-        else GlobalReferences.LEVELMANAGER.unloadLevel();//if we are not loading this from level controller then uninvoke
+        else
+        { 
+            GlobalReferences.LEVELMANAGER.unloadLevel(); 
+            SceneManager.UnloadSceneAsync(SceneNames.LEVELCONTROLLER);
+        }//if we are not loading this from level controller then uninvoke
         SceneManager.LoadSceneAsync(SceneNames.MAINMENU, LoadSceneMode.Additive);
+        GlobalEvents.PlayerPause.uninvoke();
     }
 
   
