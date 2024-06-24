@@ -24,4 +24,18 @@ public class pauseMenu : MonoBehaviour
         SceneManager.UnloadSceneAsync("PauseMenu");
         GlobalEvents.PlayerPause.uninvoke();
     }
+
+    public void quit()
+    {
+        SceneManager.UnloadSceneAsync("PauseMenu");
+        GlobalEvents.PlayerPause.uninvoke();
+        GlobalReferences.LEVELMANAGER.loadMainMenu();
+    }
+
+    public void restart()
+    {
+        SceneManager.UnloadSceneAsync("PauseMenu");
+        GlobalEvents.PlayerPause.uninvoke();
+        GlobalReferences.LEVELMANAGER.restartLevel();
+    }
 }

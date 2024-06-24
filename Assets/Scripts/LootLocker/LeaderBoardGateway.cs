@@ -4,6 +4,7 @@ using UnityEngine;
 using LootLocker.Requests;
 using LootLocker.LootLockerEnums;
 using System;
+using UnityEditor.PackageManager;
 
 
 
@@ -21,14 +22,22 @@ public static class LeaderBoardGateway
         return (int) (TimeSpan.Parse("0:10:0:0").TotalMilliseconds - TimeSpan.FromMilliseconds(timestamp).TotalMilliseconds);
     }
 
+    public static TimeSpan convertScoreToTimeSpan(int score)
+    {
+        return TimeSpan.Parse("0:10:0:0").Subtract(TimeSpan.FromMilliseconds(score));
+    }
+
     public static void SubmitScore(string leaderboardKey, string memberID, int score)
     {
-        LootLockerSDKManager.SubmitScore(memberID, score, leaderboardKey, memberID, (response) =>
+        LootLockerSDKManager.SubmitScore(leaderboardKey + memberID, score, leaderboardKey, memberID, (response) =>
         {
             if (!response.success)
             {
                 Debug.Log("Could not submit score!");
                 Debug.Log(response.errorData.ToString());
+                Debug.Log("traceID: " + response.errorData.trace_id);
+                Debug.Log("requestID: " + response.errorData.request_id);
+
                 return;
             }
             Debug.Log("Successfully submitted score!");
