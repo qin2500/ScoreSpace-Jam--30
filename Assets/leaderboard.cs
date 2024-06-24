@@ -1,9 +1,11 @@
 using LootLocker.Requests;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class leaderboard : MonoBehaviour
@@ -16,47 +18,43 @@ public class leaderboard : MonoBehaviour
     [SerializeField] private GameObject prevButton;
     [SerializeField] private GameObject nextButton;
 
-    private int leaderboardIndex = 0;
+    private int leaderboardIndex = GlobalReferences.initalLeaderboardIndex;
 
-    private string[] leaderboards = new string[GlobalReferences.NUMBEROFLEVELS];
+    private string[] leaderboards = new string[GlobalReferences.NUMBEROFLEVELS + 1];
     void Start()
     {
         leaderboards[0] = "AnyPercent";
-        for (int i = 1; i < GlobalReferences.NUMBEROFLEVELS; i++) {
+        for (int i = 1; i < GlobalReferences.NUMBEROFLEVELS + 1; i++) {
             leaderboards[i] = "level" + i;
         }
 
         prevButton.SetActive(false);
         viewLeaderBoard(leaderboardIndex);
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void viewNextLeaderBoard()
     {
         prevButton.SetActive(true);
+
+        unloadLeaderboard();
+        viewLeaderBoard(++leaderboardIndex);
         if (leaderboardIndex == leaderboards.Length - 1)
         {
             nextButton.SetActive(false);
         }
-        unloadLeaderboard();
-        viewLeaderBoard(++leaderboardIndex);
     }
 
     public void viewPreviousLeaderboard() {
         nextButton.SetActive(true);
 
+
+        unloadLeaderboard();
+        viewLeaderBoard(--leaderboardIndex);
         if (leaderboardIndex == 0)
         {
             prevButton.SetActive(false);
         }
-        unloadLeaderboard();
-        viewLeaderBoard(--leaderboardIndex);
     }
 
     private void unloadLeaderboard()
@@ -64,7 +62,7 @@ public class leaderboard : MonoBehaviour
         leaderboardTitle.text = "";
         for (int i = 0; i < m_ContentContainer.childCount; i++)
         {
-            Object.Destroy(m_ContentContainer.GetChild(i).GameObject());
+            UnityEngine.Object.Destroy(m_ContentContainer.GetChild(i).GameObject());
         }
     }
 
@@ -85,10 +83,22 @@ public class leaderboard : MonoBehaviour
                 Debug.Log(item);
                 Debug.Log("above is item we are loading for leaderboard");
                 var item_go = Instantiate(m_itemPrefab);
-                item_go.GetComponentInChildren<TMP_Text>().text = "#" + item.rank + " " + item.metadata + " - " + item.score;
+                TimeSpan timespan = LeaderBoardGateway.convertScoreToTimeSpan(item.score);
+                item_go.GetComponentInChildren<TMP_Text>().text = "#" + item.rank + " " + item.metadata + " - " + timespan.Minutes + ":" + timespan.Seconds + ":" + timespan.Milliseconds;
                 item_go.transform.SetParent(m_ContentContainer, false);
                 //item_go.transform.localScale = Vector2.one;
             }
         });
     }
+
+    public void mainMenu()
+    {
+        GlobalReferences.initalLeaderboardIndex = 0;
+        SceneManager.UnloadSceneAsync(SceneNames.LEADERBOARD);
+        if (!GlobalEvents.PlayerStartedMoving.Invoked()) SceneManager.UnloadSceneAsync(SceneNames.MAINMENU);
+        else GlobalReferences.LEVELMANAGER.unloadLevel();//if we are not loading this from level controller then uninvoke
+        SceneManager.LoadSceneAsync(SceneNames.MAINMENU, LoadSceneMode.Additive);
+    }
+
+  
 }
