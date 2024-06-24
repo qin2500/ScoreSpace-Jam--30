@@ -86,8 +86,8 @@ public class leaderboard : MonoBehaviour
                 Debug.Log("above is item we are loading for leaderboard");
                 var item_go = Instantiate(m_itemPrefab);
                 item_go.GetComponentInChildren<TMP_Text>().text = "#" + item.rank + " " + item.metadata + " - " + item.score;
-                item_go.transform.SetParent(m_ContentContainer, true);
-                item_go.transform.localScale = Vector2.one;
+                item_go.transform.SetParent(m_ContentContainer, false);
+                //item_go.transform.localScale = Vector2.one;
             }
         });
     }

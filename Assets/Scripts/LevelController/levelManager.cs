@@ -28,7 +28,6 @@ public class LevelManager : MonoBehaviour
         GlobalEvents.PlayerDeath.uninvoke();
         GlobalEvents.LevelComplete.uninvoke();
         GlobalEvents.PlayerStartedMoving.uninvoke();
-        GlobalEvents.FullPlaythroughInProgress.uninvoke();
     }
 
     // Update is called once per frame
