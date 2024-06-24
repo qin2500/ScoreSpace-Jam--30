@@ -60,9 +60,12 @@ public class LevelManager : MonoBehaviour
         {
             restartLevel();
         }
-        else if (Input.GetKeyDown(KeyCode.Q))
+        else if (Input.GetKeyDown(KeyCode.Q) && !GlobalEvents.PlayerPause.Invoked())
         {
             if (GlobalEvents.PlayerPause.Invoked()) togglePauseMenu();
+            GlobalEvents.PlayerPause.uninvoke();
+            GlobalEvents.PlayerStartedMoving.uninvoke();
+            GlobalEvents.FullPlaythroughInProgress.uninvoke();
             loadMainMenu();
         }
         else if (Input.GetKeyDown(KeyCode.P))
@@ -100,11 +103,13 @@ public class LevelManager : MonoBehaviour
         SceneManager.LoadSceneAsync("Player Controller", mode: LoadSceneMode.Additive);
         Debug.Log("Loaded level: " + this._level);
 
-        resetTimer();
+        if (!GlobalEvents.FullPlaythroughInProgress.Invoked()) resetTimer();
+
+        unpauseTimer();
 
     }
 
-    private void unloadLevel()
+    public void unloadLevel()
     {
         Debug.Log("unload level called for level: " + this._level);
         if (this._level > 0)
@@ -140,18 +145,19 @@ public class LevelManager : MonoBehaviour
             Debug.Log("Currnet Level: " + this._level);
             LeaderBoardGateway.SubmitScore(levelString(), GlobalReferences.PLAYER.Username, score);
             SceneManager.UnloadSceneAsync("LevelController");
-            loadMainMenu();
+            GlobalReferences.initalLeaderboardIndex = this._level;
+            loadLeaderboard();
             return;
         }
 
         //if full playthrough add to overall leaderboard
-        LeaderBoardGateway.SubmitScore(levelString(), GlobalReferences.PLAYER.Username, score);
-        GlobalReferences.PLAYER.Score += score;
 
         if (this._level == GlobalReferences.NUMBEROFLEVELS)
         {
-            LeaderBoardGateway.SubmitScore("Any%", GlobalReferences.PLAYER.Username, GlobalReferences.PLAYER.Score);
-            loadMainMenu();
+            GlobalReferences.PLAYER.Score += score;
+            LeaderBoardGateway.SubmitScore("AnyPercent", GlobalReferences.PLAYER.Username, GlobalReferences.PLAYER.Score);
+            GlobalReferences.initalLeaderboardIndex = 0;
+            loadLeaderboard();
             Debug.Log("Currnet Level: " + this._level);
             return;
         }
@@ -180,10 +186,7 @@ public class LevelManager : MonoBehaviour
 
     public void loadLeaderboard()
     {
-        unloadLevel();
         SceneManager.LoadSceneAsync(SceneNames.LEADERBOARD, mode: LoadSceneMode.Additive);
-        SceneManager.UnloadSceneAsync("LevelController");
-
     }
 
     private void togglePauseMenu()

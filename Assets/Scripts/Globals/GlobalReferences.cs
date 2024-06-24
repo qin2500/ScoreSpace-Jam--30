@@ -22,6 +22,7 @@ public static class GlobalReferences
     public static Player PLAYER { get { return player; } set { player = value; } }
 
     public const int NUMBEROFLEVELS = 6;
+    public static int initalLeaderboardIndex = 0;
 }
 
 public class Player
