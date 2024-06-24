@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 public class pauseMenu : MonoBehaviour
 {
     private SoundMixerManager soundMixerManager = GlobalReferences.SOUNDMIXERMANAGER;
-    
+
+
     public void changeMasterVolume(float val){
         soundMixerManager.SetMasterVolume(val);
     }

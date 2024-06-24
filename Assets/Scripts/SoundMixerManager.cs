@@ -9,6 +9,10 @@ public class SoundMixerManager : MonoBehaviour
 {
     [SerializeField] private AudioMixer audioMixer;
 
+    void Start(){
+        GlobalReferences.SOUNDMIXERMANAGER = this;
+    }
+
     public void SetMasterVolume(float level){
         audioMixer.SetFloat("masterVolume", Mathf.Log10(level)*20f );
     }
