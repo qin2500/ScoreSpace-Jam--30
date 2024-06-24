@@ -14,6 +14,8 @@ public class LevelManager : MonoBehaviour
     private int deaths = 0;
     [SerializeField] private TMP_Text _text;
     [SerializeField] private TMP_Text deathCounter;
+    [SerializeField] private TMP_Text levelCounter;
+
 
     private bool stopUpdating = false;
 
@@ -57,7 +59,6 @@ public class LevelManager : MonoBehaviour
         {
             completeLevel();
             GlobalEvents.LevelComplete.uninvoke();
-            stopUpdating = true;
             return;
         }
 
@@ -115,6 +116,8 @@ public class LevelManager : MonoBehaviour
 
         unpauseTimer();
 
+        levelCounter.text = "Level " + this._level;
+
     }
 
     public void unloadLevel()
@@ -153,6 +156,7 @@ public class LevelManager : MonoBehaviour
             Debug.Log("Currnet Level: " + this._level);
             LeaderBoardGateway.SubmitScore(levelString(), GlobalReferences.PLAYER.Username, score);
             GlobalReferences.initalLeaderboardIndex = this._level;
+            stopUpdating = true;
             loadLeaderboard();
             return;
         }
@@ -166,6 +170,7 @@ public class LevelManager : MonoBehaviour
             GlobalReferences.initalLeaderboardIndex = 0;
             loadLeaderboard();
             Debug.Log("Currnet Level: " + this._level);
+            stopUpdating = true;
             return;
         }
         incrementLevel(); 
