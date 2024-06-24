@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfcdd01fa307ff84a91c3e46a3882bac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
+  speed: 5
   jumpForce: 5
   feet: {fileID: 4863275553715794833}
   planetLayer:

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,6 +15,7 @@ public class PlayerController : MonoBehaviour
 
     public UnityEvent onDeath;
     bool isGrounded;
+    public bool isMoving = false;
 
     Rigidbody2D m_rigidbody;
     GravityObject gravityObject;
@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
         m_rigidbody = GetComponent<Rigidbody2D>();
         gravityObject = GetComponent<GravityObject>();
         animator = GetComponent<Animator>();
+
+        transform.position = GlobalReferences.PLAYER.startPosition;
     }
 
     private void Update()
@@ -75,8 +77,12 @@ public class PlayerController : MonoBehaviour
             {
                 if (x > 0 && !facingRight) flip();
                 else if (x < 0 && facingRight) flip();
-                m_rigidbody.velocity = Vector2.zero;
-                m_rigidbody.velocity += movementVelocity;
+                if(!isMoving)
+                {
+                    m_rigidbody.velocity = Vector2.zero;
+                    m_rigidbody.velocity += movementVelocity;
+                    isMoving= true;
+                }
                 animator.Play("walk");
 
                 GlobalEvents.PlayerStartedMoving.invoke();
@@ -84,6 +90,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 m_rigidbody.velocity = Vector2.zero;
+                isMoving = false;
                 animator.Play("Idle");
             }
 
@@ -106,6 +113,7 @@ public class PlayerController : MonoBehaviour
             float y = Input.GetAxisRaw("Vertical");
 
             m_rigidbody.AddForce(new Vector2(x, y).normalized * speed * 0.2f);
+            isMoving = false;
         }
     }
 
@@ -117,7 +125,7 @@ public class PlayerController : MonoBehaviour
             Instantiate(death, transform.position, transform.rotation);
             if(onDeath != null)
             {
-                onDeath.Invoke();
+                Invoke("incokeDeath", 1.0f);
             }
         }
     }
@@ -128,6 +136,11 @@ public class PlayerController : MonoBehaviour
         scaler.x *= -1;
         playerSprite.transform.localScale = scaler;
 
+    }
+
+    void incokeDeath()
+    {
+        onDeath.Invoke();
     }
 
     public void shineKudasai()
