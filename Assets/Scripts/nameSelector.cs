@@ -28,10 +28,6 @@ public class nameSelector : MonoBehaviour
                 SceneManager.UnloadSceneAsync(SceneNames.MAINMENU);
                 return;
             }
-<<<<<<< HEAD
-            //SceneManager.UnloadSceneAsync(SceneNames.MAINMENU);
-=======
->>>>>>> cb1fb91b87be85ae9616a449223ff5d896e7a540
             SceneManager.LoadSceneAsync(SceneNames.LEVELSELECTOR, mode:LoadSceneMode.Additive);
 
         }
