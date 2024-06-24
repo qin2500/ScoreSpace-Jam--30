@@ -19,13 +19,17 @@ public static class LeaderBoardGateway
 
     public static int convertTimestampToScore(float timestamp)
     {
+        Debug.Log("timestamp float is: " + timestamp);
+        Debug.Log("timestamp object is: " + TimeSpan.FromSeconds(timestamp));
+        Debug.Log("timestamp int is: " + TimeSpan.FromSeconds(timestamp).TotalMilliseconds);
+
         //return (int) (TimeSpan.Parse("0:10:0:0").TotalMilliseconds - TimeSpan.FromMilliseconds(timestamp).TotalMilliseconds);
-        return (int)(TimeSpan.FromMilliseconds(timestamp).TotalMilliseconds);
+        return (int)(TimeSpan.FromSeconds(timestamp).TotalMilliseconds);
     }
 
     public static TimeSpan convertScoreToTimeSpan(int score)
     {
-        Debug.Log(score);
+        Debug.Log("converting score to timespan: " + score);
         return TimeSpan.FromMilliseconds(score);
     }
 
