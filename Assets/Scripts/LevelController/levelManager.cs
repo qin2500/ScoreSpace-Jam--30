@@ -144,7 +144,6 @@ public class LevelManager : MonoBehaviour
         {
             Debug.Log("Currnet Level: " + this._level);
             LeaderBoardGateway.SubmitScore(levelString(), GlobalReferences.PLAYER.Username, score);
-            SceneManager.UnloadSceneAsync("LevelController");
             GlobalReferences.initalLeaderboardIndex = this._level;
             loadLeaderboard();
             return;
