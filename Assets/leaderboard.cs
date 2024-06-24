@@ -1,4 +1,5 @@
 using LootLocker.Requests;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -18,22 +19,16 @@ public class leaderboard : MonoBehaviour
 
     private int leaderboardIndex = 0;
 
-    private string[] leaderboards = new string[GlobalReferences.NUMBEROFLEVELS];
+    private string[] leaderboards = new string[GlobalReferences.NUMBEROFLEVELS + 1];
     void Start()
     {
         leaderboards[0] = "AnyPercent";
-        for (int i = 1; i < GlobalReferences.NUMBEROFLEVELS; i++) {
+        for (int i = 1; i < GlobalReferences.NUMBEROFLEVELS + 1; i++) {
             leaderboards[i] = "level" + i;
         }
 
         prevButton.SetActive(false);
         viewLeaderBoard(leaderboardIndex);
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         
     }
 
@@ -66,7 +61,7 @@ public class leaderboard : MonoBehaviour
         leaderboardTitle.text = "";
         for (int i = 0; i < m_ContentContainer.childCount; i++)
         {
-            Object.Destroy(m_ContentContainer.GetChild(i).GameObject());
+            UnityEngine.Object.Destroy(m_ContentContainer.GetChild(i).GameObject());
         }
     }
 
@@ -87,10 +82,13 @@ public class leaderboard : MonoBehaviour
                 Debug.Log(item);
                 Debug.Log("above is item we are loading for leaderboard");
                 var item_go = Instantiate(m_itemPrefab);
-                item_go.GetComponentInChildren<TMP_Text>().text = "#" + item.rank + " " + item.metadata + " - " + item.score;
+                TimeSpan timespan = LeaderBoardGateway.convertScoreToTimeSpan(item.score);
+                item_go.GetComponentInChildren<TMP_Text>().text = "#" + item.rank + " " + item.metadata + " - " + timespan.Minutes + ":" + timespan.Seconds + ":" + timespan.Milliseconds;
                 item_go.transform.SetParent(m_ContentContainer, false);
                 //item_go.transform.localScale = Vector2.one;
             }
         });
     }
+
+  
 }
