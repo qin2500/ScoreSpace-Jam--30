@@ -20,9 +20,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Material
+  m_Name: New Material 4
   m_Shader: {fileID: -6465566751694194690, guid: 3ff775b9201f5724385326e10b9ef45f, type: 3}
-  m_Parent: {fileID: 2100000, guid: 956845508348e8f46935b12eb81b89a7, type: 2}
+  m_Parent: {fileID: -876546973899608171, guid: 3ff775b9201f5724385326e10b9ef45f, type: 3}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -41,5 +41,5 @@ Material:
     - _QueueControl: 0
     m_Colors:
     - _Fresnel_Effect: {r: 28.51895, g: 28.51895, b: 28.51895, a: 0}
-    - _Main_Color: {r: 0, g: 0.08336023, b: 0.270913, a: 0}
+    - _Main_Color: {r: 0, g: 0.04961896, b: 0.23584908, a: 0}
   m_BuildTextureStacks: []
