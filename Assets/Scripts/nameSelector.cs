@@ -19,9 +19,11 @@ public class nameSelector : MonoBehaviour
         if (inputField != null)
         {
 
+            inputField.text = inputField.text.Trim();
+
             if (!validateInput(inputField.text))
             {
-                errorText.text = "Please use a shorter name";
+                errorText.text = "Please use a between 3 and 10 characters long";
                 errorText.gameObject.SetActive(true);
                 return;
             }
@@ -47,7 +49,7 @@ public class nameSelector : MonoBehaviour
 
     private bool validateInput(string input)
     {
-        if (input.Length > 10) return false;
+        if (input.Length > 10 || input.Length < 3) return false;
         return true;
     }
 }
