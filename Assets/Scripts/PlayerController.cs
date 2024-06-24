@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] GameObject playerSprite;
     [SerializeField] GameObject death;
+    [SerializeField] float freeMoveLimit;
     [SerializeField] AudioClip deathSound;
     [SerializeField] AudioClip jumpSound;
     [SerializeField] AudioClip landedSound;
@@ -20,6 +21,7 @@ public class PlayerController : MonoBehaviour
     bool isGrounded;
     bool playedSound = false;
     public bool isMoving = false;
+    public bool freeMove = true;
 
     Rigidbody2D m_rigidbody;
     GravityObject gravityObject;
@@ -60,6 +62,13 @@ public class PlayerController : MonoBehaviour
         {
             jumpRequested = true;
         }
+
+        float distance = ((Vector2)gravityObject.getCurrentAttractor().planetTransform.position - m_rigidbody.position).magnitude;
+        if (distance > freeMoveLimit)
+        {
+            freeMove = false;
+        }
+        else freeMove = true;
     }
 
     private void FixedUpdate()
@@ -122,7 +131,7 @@ public class PlayerController : MonoBehaviour
             float x = Input.GetAxisRaw("Horizontal");
             float y = Input.GetAxisRaw("Vertical");
 
-            m_rigidbody.AddForce(new Vector2(x, y).normalized * speed * 0.5f);
+            if(freeMove)m_rigidbody.AddForce(new Vector2(x, y).normalized * speed * 0.5f);
 
             isMoving = false;
         }

@@ -26,7 +26,7 @@ public class GravityObject : MonoBehaviour
     {
         if (currentAttractor != null)
         {
-            if (!currentAttractor.attractedObjects.Contains(m_collider)) currentAttractor = null;
+            //if (!currentAttractor.attractedObjects.Contains(m_collider)) currentAttractor = null;
             if (rotateToCenter) RotateToCenter();
         }
     }
