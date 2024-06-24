@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/NameSelector.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
     path: Assets/Scenes/Game.unity
     guid: 5511dfe295496934b8a4a4c3b347fe2a
+  - enabled: 1
+    path: Assets/Scenes/NameSelector.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 100aa9175d0724c41907000bd7de6d0a
@@ -18,7 +18,10 @@ EditorBuildSettings:
     path: Assets/Scenes/LevelController.unity
     guid: 6b7195c45e8376547a65f52ac928e9a5
   - enabled: 1
-    path: Assets/Scenes/Level 1.unity
+    path: Assets/Scenes/Level 1/Level 2.unity
+    guid: ed210b0add2e48d49937611c9ed1e8e6
+  - enabled: 1
+    path: Assets/Scenes/Level 1/Level 1.unity
     guid: a78b45bb17920a14299f422b12e6468b
   - enabled: 1
     path: Assets/Scenes/Player Controller.unity
@@ -26,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PauseMenu.unity
     guid: e485ea9750e855544a6afe490587e862
+  - enabled: 1
+    path: Assets/Scenes/LevelSelector.unity
+    guid: ad9b2d3bc4544c94bb3eef2ca9aff39f
   - enabled: 1
     path: Assets/Scenes/Credits.unity
     guid: cae22b86ffe66dd4e936d3f9b99a2c13

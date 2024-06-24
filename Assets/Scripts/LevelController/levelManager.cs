@@ -28,6 +28,10 @@ public class LevelManager : MonoBehaviour
         GlobalEvents.PlayerDeath.uninvoke();
         GlobalEvents.LevelComplete.uninvoke();
         GlobalEvents.PlayerStartedMoving.uninvoke();
+<<<<<<< HEAD
+        //GlobalEvents.FullPlaythroughInProgress.uninvoke();
+=======
+>>>>>>> cb1fb91b87be85ae9616a449223ff5d896e7a540
     }
 
     // Update is called once per frame
@@ -127,7 +131,7 @@ public class LevelManager : MonoBehaviour
     {
         //stop counting time and turn it into score then add to leaderboard
 
-
+        
         
         pauseTimer();
         int score = LeaderBoardGateway.convertTimestampToScore(_currentTime);
@@ -137,7 +141,9 @@ public class LevelManager : MonoBehaviour
         // if single level then add to leaderboard for level
         if (!GlobalEvents.FullPlaythroughInProgress.Invoked())
         {
+            Debug.Log("Currnet Level: " + this._level);
             LeaderBoardGateway.SubmitScore(levelString(), GlobalReferences.PLAYER.Username, score);
+            SceneManager.UnloadSceneAsync("LevelController");
             loadMainMenu();
             return;
         }
@@ -150,6 +156,7 @@ public class LevelManager : MonoBehaviour
         {
             LeaderBoardGateway.SubmitScore("Any%", GlobalReferences.PLAYER.Username, GlobalReferences.PLAYER.Score);
             loadMainMenu();
+            Debug.Log("Currnet Level: " + this._level);
             return;
         }
         incrementLevel(); 
@@ -174,6 +181,9 @@ public class LevelManager : MonoBehaviour
         
     }
 
+<<<<<<< HEAD
+    public void togglePauseMenu()
+=======
     public void loadLeaderboard()
     {
         unloadLevel();
@@ -183,6 +193,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private void togglePauseMenu()
+>>>>>>> cb1fb91b87be85ae9616a449223ff5d896e7a540
     {
         if (GlobalEvents.PlayerPause.Invoked())
         {

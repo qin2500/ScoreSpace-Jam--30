@@ -8,37 +8,51 @@ public class mainMenu : MonoBehaviour
 {
     // Start is called before the first frame update
 
+<<<<<<< HEAD
+    [SerializeField] GameObject main;
+    //[SerializeField] GameObject levelSelect;
+    //[SerializeField] GameObject credits;
+=======
     [SerializeField] GameObject canvas;
+>>>>>>> cb1fb91b87be85ae9616a449223ff5d896e7a540
 
+    GameObject currentlyActive;
 
-    void Start()
+    private void Awake()
     {
-        
+        currentlyActive = main;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Play()
     {
         GlobalEvents.FullPlaythroughInProgress.invoke();
         SceneManager.LoadSceneAsync("NameSelector", mode: LoadSceneMode.Additive);
+<<<<<<< HEAD
+        currentlyActive.SetActive(false);
+        
+=======
         hideAssets();
+>>>>>>> cb1fb91b87be85ae9616a449223ff5d896e7a540
     }
 
     public void levelSelector()
     {
         GlobalEvents.FullPlaythroughInProgress.uninvoke();
         SceneManager.LoadSceneAsync("NameSelector", mode: LoadSceneMode.Additive);
+<<<<<<< HEAD
+        currentlyActive.SetActive(false);
+
+=======
         hideAssets();
+>>>>>>> cb1fb91b87be85ae9616a449223ff5d896e7a540
     }
 
     public void loadCredits()
     {
+<<<<<<< HEAD
+        currentlyActive.SetActive(false);
+=======
         hideAssets();
+>>>>>>> cb1fb91b87be85ae9616a449223ff5d896e7a540
         SceneManager.LoadSceneAsync("Credits", mode: LoadSceneMode.Additive);
     }
 

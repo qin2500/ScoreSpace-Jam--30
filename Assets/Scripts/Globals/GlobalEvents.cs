@@ -43,12 +43,12 @@ public class Event
     public override string ToString() { return "EVENT: " + name + " - " + description; }
 
     public void invoke() {
-        Debug.Log("invoked " + this.ToString());
+        //Debug.Log("invoked " + this.ToString());
         this.invoked = true; 
     }
 
     public void uninvoke() {
-        Debug.Log("uninvoked " + this.ToString());
+        //Debug.Log("uninvoked " + this.ToString());
         this.invoked = false; 
     }
 
