@@ -10,15 +10,19 @@ public class nameSelector : MonoBehaviour
     [SerializeField] private TMP_Text errorText;
     // Start is called before the first frame update
 
-
+    private void Start()
+    {
+        errorText.gameObject.SetActive(false);
+    }
     public void selectName() 
     {
         if (inputField != null)
         {
 
-            if (validateInput(inputField.text))
+            if (!validateInput(inputField.text))
             {
                 errorText.text = "Please use a shorter name";
+                errorText.gameObject.SetActive(true);
                 return;
             }
 
