@@ -4,7 +4,7 @@ using UnityEngine;
 using LootLocker.Requests;
 using LootLocker.LootLockerEnums;
 using System;
-using UnityEditor.PackageManager;
+
 
 
 
@@ -19,12 +19,14 @@ public static class LeaderBoardGateway
 
     public static int convertTimestampToScore(float timestamp)
     {
-        return (int) (TimeSpan.Parse("0:10:0:0").TotalMilliseconds - TimeSpan.FromMilliseconds(timestamp).TotalMilliseconds);
+        //return (int) (TimeSpan.Parse("0:10:0:0").TotalMilliseconds - TimeSpan.FromMilliseconds(timestamp).TotalMilliseconds);
+        return (int)(TimeSpan.FromMilliseconds(timestamp).TotalMilliseconds);
     }
 
     public static TimeSpan convertScoreToTimeSpan(int score)
     {
-        return TimeSpan.Parse("0:10:0:0").Subtract(TimeSpan.FromMilliseconds(score));
+        Debug.Log(score);
+        return TimeSpan.FromMilliseconds(score);
     }
 
     public static void SubmitScore(string leaderboardKey, string memberID, int score)
