@@ -11,7 +11,11 @@ public class LevelManager : MonoBehaviour
     private int _level = 0;
     private bool _timerActive = false;
     private float _currentTime;
+    private int deaths = 0;
     [SerializeField] private TMP_Text _text;
+    [SerializeField] private TMP_Text deathCounter;
+
+    private bool stopUpdating = false;
 
 
     private void Awake()
@@ -33,7 +37,7 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (stopUpdating) return;
         if (GlobalEvents.PlayerStartedMoving.Invoked() && !GlobalEvents.PlayerPause.Invoked())
         {
             _timerActive = true;
@@ -42,6 +46,7 @@ public class LevelManager : MonoBehaviour
 
         if (GlobalEvents.PlayerDeath.Invoked())
         {
+            deathCounter.text = "Deaths: " + ++deaths;
             restartLevel();
             GlobalEvents.PlayerDeath.uninvoke();
             GlobalEvents.LevelComplete.uninvoke();
@@ -52,6 +57,7 @@ public class LevelManager : MonoBehaviour
         {
             completeLevel();
             GlobalEvents.LevelComplete.uninvoke();
+            stopUpdating = true;
             return;
         }
 
