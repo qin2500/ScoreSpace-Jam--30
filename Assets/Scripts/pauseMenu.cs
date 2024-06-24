@@ -6,18 +6,17 @@ using UnityEngine.SceneManagement;
 public class pauseMenu : MonoBehaviour
 {
     private SoundMixerManager soundMixerManager = GlobalReferences.SOUNDMIXERMANAGER;
-
-    // Start is called before the first frame update
-    void Start()
-    {
- 
+    
+    public void changeMasterVolume(float val){
+        soundMixerManager.SetMasterVolume(val);
+    }
+    public void changeSFXVolume(float val){
+        soundMixerManager.SetMasterVolume(val);
+    }
+    public void changeMusicVolume(float val){
+        soundMixerManager.SetMasterVolume(val);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void resume()
     {
