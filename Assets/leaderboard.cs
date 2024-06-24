@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class leaderboard : MonoBehaviour
@@ -17,7 +18,7 @@ public class leaderboard : MonoBehaviour
     [SerializeField] private GameObject prevButton;
     [SerializeField] private GameObject nextButton;
 
-    private int leaderboardIndex = 0;
+    private int leaderboardIndex = GlobalReferences.initalLeaderboardIndex;
 
     private string[] leaderboards = new string[GlobalReferences.NUMBEROFLEVELS + 1];
     void Start()
@@ -29,7 +30,7 @@ public class leaderboard : MonoBehaviour
 
         prevButton.SetActive(false);
         viewLeaderBoard(leaderboardIndex);
-        
+
     }
 
     public void viewNextLeaderBoard()
@@ -88,6 +89,15 @@ public class leaderboard : MonoBehaviour
                 //item_go.transform.localScale = Vector2.one;
             }
         });
+    }
+
+    public void mainMenu()
+    {
+        GlobalReferences.initalLeaderboardIndex = 0;
+        SceneManager.UnloadSceneAsync(SceneNames.LEADERBOARD);
+        if (!GlobalEvents.PlayerStartedMoving.Invoked()) SceneManager.UnloadSceneAsync(SceneNames.MAINMENU);
+        else GlobalReferences.LEVELMANAGER.unloadLevel();//if we are not loading this from level controller then uninvoke
+        SceneManager.LoadSceneAsync(SceneNames.MAINMENU, LoadSceneMode.Additive);
     }
 
   
