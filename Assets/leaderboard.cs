@@ -40,23 +40,25 @@ public class leaderboard : MonoBehaviour
     public void viewNextLeaderBoard()
     {
         prevButton.SetActive(true);
+
+        unloadLeaderboard();
+        viewLeaderBoard(++leaderboardIndex);
         if (leaderboardIndex == leaderboards.Length - 1)
         {
             nextButton.SetActive(false);
         }
-        unloadLeaderboard();
-        viewLeaderBoard(++leaderboardIndex);
     }
 
     public void viewPreviousLeaderboard() {
         nextButton.SetActive(true);
 
+
+        unloadLeaderboard();
+        viewLeaderBoard(--leaderboardIndex);
         if (leaderboardIndex == 0)
         {
             prevButton.SetActive(false);
         }
-        unloadLeaderboard();
-        viewLeaderBoard(--leaderboardIndex);
     }
 
     private void unloadLeaderboard()
