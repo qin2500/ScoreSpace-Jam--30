@@ -58,9 +58,11 @@ public class LevelManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R) && !GlobalEvents.PlayerPause.Invoked())
         {
+            if (GlobalEvents.PlayerPause.Invoked()) togglePauseMenu();
+            GlobalEvents.PlayerPause.uninvoke();
             restartLevel();
         }
-        else if (Input.GetKeyDown(KeyCode.Q) && !GlobalEvents.PlayerPause.Invoked())
+        else if (Input.GetKeyDown(KeyCode.Q))
         {
             if (GlobalEvents.PlayerPause.Invoked()) togglePauseMenu();
             GlobalEvents.PlayerPause.uninvoke();
@@ -185,6 +187,7 @@ public class LevelManager : MonoBehaviour
 
     public void loadLeaderboard()
     {
+        GlobalEvents.PlayerPause.invoke();
         SceneManager.LoadSceneAsync(SceneNames.LEADERBOARD, mode: LoadSceneMode.Additive);
     }
 
