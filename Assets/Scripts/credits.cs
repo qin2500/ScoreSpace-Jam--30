@@ -4,13 +4,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class credits : MonoBehaviour
+public class Credits : MonoBehaviour
 {
-
     public void reopenMainMenu()
     {
-        SceneManager.UnloadSceneAsync("MainMenu");
-        SceneManager.LoadSceneAsync("MainMenu", mode: LoadSceneMode.Additive);
-        SceneManager.UnloadSceneAsync("Credits");
+        SceneManager.UnloadSceneAsync("MainMenu").completed += (asyncOperations) =>
+        {
+            SceneManager.LoadSceneAsync("MainMenu", mode: LoadSceneMode.Additive).completed += (asyncOperation) =>
+            {
+                SceneManager.UnloadSceneAsync("Credits");
+            };
+        };
+        
     }
 }

@@ -45,7 +45,6 @@ public class LevelManager : MonoBehaviour
             _timerActive = true;
         }
 
-
         if (GlobalEvents.PlayerDeath.Invoked())
         {
             deathCounter.text = "Deaths: " + ++deaths;
@@ -61,7 +60,6 @@ public class LevelManager : MonoBehaviour
             GlobalEvents.LevelComplete.uninvoke();
             return;
         }
-
 
         if (Input.GetKeyDown(KeyCode.R) && !GlobalEvents.PlayerPause.Invoked())
         {
@@ -104,32 +102,43 @@ public class LevelManager : MonoBehaviour
             throw new Exception("level cannot be set to 0");
         }
 
-        unloadLevel();
+        UnloadLevel(() =>
+        {
+            this._level = level;
+            Debug.Log("Loading level: " + this._level);
+            SceneManager.LoadSceneAsync("Level " + this._level, mode: LoadSceneMode.Additive).completed += (asyncOperation) =>
+            {
+                SceneManager.LoadSceneAsync("Player Controller", mode: LoadSceneMode.Additive).completed += (asyncOperation) =>
+                {
+                    Debug.Log("Loaded level: " + this._level);
 
-        this._level = level;
-        Debug.Log("Loading level: " + this._level);
-        SceneManager.LoadSceneAsync("Level " + this._level, mode: LoadSceneMode.Additive);
-        SceneManager.LoadSceneAsync("Player Controller", mode: LoadSceneMode.Additive);
-        Debug.Log("Loaded level: " + this._level);
+                    if (!GlobalEvents.FullPlaythroughInProgress.Invoked()) resetTimer();
 
-        if (!GlobalEvents.FullPlaythroughInProgress.Invoked()) resetTimer();
+                    unpauseTimer();
 
-        unpauseTimer();
-
-        levelCounter.text = "Level " + this._level;
-
+                    levelCounter.text = "Level " + this._level;
+                };
+            };
+        });
     }
 
-    public void unloadLevel()
+    public void UnloadLevel(System.Action callback)
     {
         Debug.Log("unload level called for level: " + this._level);
         if (this._level > 0)
         {
             Debug.Log("Unloading level: " + this._level);
-            SceneManager.UnloadSceneAsync("Level " +this._level);
-            SceneManager.UnloadSceneAsync("Player Controller");
+            SceneManager.UnloadSceneAsync("Level " + this._level).completed += (asyncOperation) =>
+            {
+                SceneManager.UnloadSceneAsync("Player Controller").completed += (asyncOperation) =>
+                {
+                    callback();
+                };
+            };
+        } else
+        {
+            callback();
         }
-
     }
 
     public void incrementLevel() { setLevel(this._level + 1); }
@@ -153,7 +162,6 @@ public class LevelManager : MonoBehaviour
         // if single level then add to leaderboard for level
         if (!GlobalEvents.FullPlaythroughInProgress.Invoked())
         {
-            Debug.Log("Currnet Level: " + this._level);
             LeaderBoardGateway.SubmitScore(levelString(), GlobalReferences.PLAYER.Username, score);
             GlobalReferences.initalLeaderboardIndex = this._level;
             stopUpdating = true;
@@ -168,9 +176,8 @@ public class LevelManager : MonoBehaviour
             GlobalReferences.PLAYER.Score += score;
             LeaderBoardGateway.SubmitScore("AnyPercent", GlobalReferences.PLAYER.Username, GlobalReferences.PLAYER.Score);
             GlobalReferences.initalLeaderboardIndex = 0;
-            loadLeaderboard();
-            Debug.Log("Currnet Level: " + this._level);
             stopUpdating = true;
+            loadLeaderboard();
             return;
         }
         incrementLevel(); 
@@ -189,10 +196,13 @@ public class LevelManager : MonoBehaviour
 
     public void loadMainMenu()
     {
-        unloadLevel();
-        SceneManager.LoadSceneAsync("MainMenu", mode: LoadSceneMode.Additive);
-        SceneManager.UnloadSceneAsync("LevelController");
-        
+        UnloadLevel(() => 
+        { 
+            SceneManager.LoadSceneAsync("MainMenu", mode: LoadSceneMode.Additive).completed+=(asyncOperation)=> 
+            { 
+                SceneManager.UnloadSceneAsync("LevelController");
+            };
+        });
     }
 
 
@@ -206,16 +216,21 @@ public class LevelManager : MonoBehaviour
     {
         if (GlobalEvents.PlayerPause.Invoked())
         {
-            if (GlobalEvents.PlayerStartedMoving.Invoked())
-                unpauseTimer();
-            SceneManager.UnloadSceneAsync("PauseMenu");
-            GlobalEvents.PlayerPause.uninvoke();
+            SceneManager.UnloadSceneAsync("PauseMenu").completed += (asyncOperation) => 
+            {
+                if (GlobalEvents.PlayerStartedMoving.Invoked())
+                    unpauseTimer();
+                GlobalEvents.PlayerPause.uninvoke();
+            };
+
         }
         else
         {
             pauseTimer();
-            SceneManager.LoadSceneAsync("PauseMenu", mode:LoadSceneMode.Additive);
-            GlobalEvents.PlayerPause.invoke();
+            SceneManager.LoadSceneAsync("PauseMenu", mode: LoadSceneMode.Additive).completed += (asyncOperation) => 
+            { 
+                GlobalEvents.PlayerPause.invoke();
+            };
         }
     }
 

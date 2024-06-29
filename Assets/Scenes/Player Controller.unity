@@ -264,7 +264,7 @@ MonoBehaviour:
   freeMoveLimit: 20
   deathSound: {fileID: 8300000, guid: 23a7a2e63a0a13242a408fdb96d7bc7b, type: 3}
   jumpSound: {fileID: 8300000, guid: 8f75f2e58886be34f8b7b4b3ce1cdd4b, type: 3}
-  landedSound: {fileID: 8300000, guid: eeb5f8bea9650ea4b806e72e04b898fd, type: 3}
+  landedSound: {fileID: 8300000, guid: 0c9a4e429cc8e1947854af927c49c833, type: 3}
   onDeath:
     m_PersistentCalls:
       m_Calls:

@@ -12,30 +12,36 @@ public class pauseMenu : MonoBehaviour
         soundMixerManager.SetMasterVolume(val);
     }
     public void changeSFXVolume(float val){
-        soundMixerManager.SetMasterVolume(val);
+        soundMixerManager.SetSFXVolume(val);
     }
     public void changeMusicVolume(float val){
-        soundMixerManager.SetMasterVolume(val);
+        soundMixerManager.SetMusicVolume(val);
     }
 
 
     public void resume()
     {
-        SceneManager.UnloadSceneAsync("PauseMenu");
-        GlobalEvents.PlayerPause.uninvoke();
+        SceneManager.UnloadSceneAsync("PauseMenu").completed += (asyncOperation)=> 
+        { 
+            GlobalEvents.PlayerPause.uninvoke();
+        };
     }
 
     public void quit()
     {
-        SceneManager.UnloadSceneAsync("PauseMenu");
-        GlobalEvents.PlayerPause.uninvoke();
-        GlobalReferences.LEVELMANAGER.loadMainMenu();
+        SceneManager.UnloadSceneAsync("PauseMenu").completed += (asyncOperation) => 
+        { 
+            GlobalEvents.PlayerPause.uninvoke();
+            GlobalReferences.LEVELMANAGER.loadMainMenu();
+        };
     }
 
     public void restart()
     {
-        SceneManager.UnloadSceneAsync("PauseMenu");
-        GlobalEvents.PlayerPause.uninvoke();
-        GlobalReferences.LEVELMANAGER.restartLevel();
+        SceneManager.UnloadSceneAsync("PauseMenu").completed += (asyncOperation) =>
+        {
+            GlobalEvents.PlayerPause.uninvoke();
+            GlobalReferences.LEVELMANAGER.restartLevel();
+        };
     }
 }

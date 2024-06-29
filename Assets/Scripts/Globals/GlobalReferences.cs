@@ -10,15 +10,12 @@ public static class GlobalReferences
     private static LevelManager levelManager;
     private static GameObject startIndicator;
     private static SoundMixerManager soundMixerManager;
-
     private static Player player = new();
 
     public static GameManager GAMEMANAGER {  get { return gameManager; } set { gameManager = value; } }
     public static LevelManager LEVELMANAGER { get { return levelManager; } set { levelManager = value; } }
     public static SoundMixerManager SOUNDMIXERMANAGER { get {return soundMixerManager; } set {soundMixerManager = value;}}
     public static GameObject STARTINDICATOR { get { return startIndicator; } set { startIndicator = value; } }
-    
-
     public static Player PLAYER { get { return player; } set { player = value; } }
 
     public const int NUMBEROFLEVELS = 5;
@@ -45,8 +42,4 @@ public static class SceneNames
     public const string NAMESELECTOR = "NameSelector";
     public const string GAMEMANAGER = "GameManager";
     public const string LEADERBOARD = "Leaderboard";
-
-
-
-
 }

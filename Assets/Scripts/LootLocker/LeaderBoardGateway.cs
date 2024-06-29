@@ -5,12 +5,6 @@ using LootLocker.Requests;
 using LootLocker.LootLockerEnums;
 using System;
 
-
-
-
-
-//just meant to hold leaderboard API stuff
-
 public static class LeaderBoardGateway
 {
     const int PAGESIZE = 50;
@@ -19,11 +13,6 @@ public static class LeaderBoardGateway
 
     public static int convertTimestampToScore(float timestamp)
     {
-        Debug.Log("timestamp float is: " + timestamp);
-        Debug.Log("timestamp object is: " + TimeSpan.FromSeconds(timestamp));
-        Debug.Log("timestamp int is: " + TimeSpan.FromSeconds(timestamp).TotalMilliseconds);
-
-        //return (int) (TimeSpan.Parse("0:10:0:0").TotalMilliseconds - TimeSpan.FromMilliseconds(timestamp).TotalMilliseconds);
         return (int)(TimeSpan.FromSeconds(timestamp).TotalMilliseconds);
     }
 
@@ -52,7 +41,7 @@ public static class LeaderBoardGateway
     }
 
 
-    public static void getLeaderBoardEntries(string leaderboardKey, System.Action<LootLockerLeaderboardMember[]> callback, int page = 0)
+    public static void getLeaderBoardEntries(string leaderboardKey, Action<LootLockerLeaderboardMember[]> callback, int page = 0)
     {
         int count = 50;
 

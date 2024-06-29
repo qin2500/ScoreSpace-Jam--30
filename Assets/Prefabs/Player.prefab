@@ -108,16 +108,15 @@ MonoBehaviour:
   animator: {fileID: 28754298958202143}
   playerSprite: {fileID: 6450877651462201617}
   death: {fileID: 7925855002300385830, guid: 3885859c510105144ac3053a6d51adc9, type: 3}
+  freeMoveLimit: 0
   deathSound: {fileID: 8300000, guid: 23a7a2e63a0a13242a408fdb96d7bc7b, type: 3}
-  walkSound:
-  - {fileID: 8300000, guid: 6eb5f3b580110184a8a5932e28ff893b, type: 3}
-  - {fileID: 8300000, guid: f204bba43e7187141a929719d88c6125, type: 3}
   jumpSound: {fileID: 8300000, guid: 8f75f2e58886be34f8b7b4b3ce1cdd4b, type: 3}
-  landedSound: {fileID: 8300000, guid: eeb5f8bea9650ea4b806e72e04b898fd, type: 3}
+  landedSound: {fileID: 8300000, guid: 0c9a4e429cc8e1947854af927c49c833, type: 3}
   onDeath:
     m_PersistentCalls:
       m_Calls: []
   isMoving: 0
+  freeMove: 1
 --- !u!50 &8097570657990557858
 Rigidbody2D:
   serializedVersion: 4

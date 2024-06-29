@@ -15,30 +15,37 @@ public class mainMenu : MonoBehaviour
     public void Play()
     {
         GlobalEvents.FullPlaythroughInProgress.invoke();
-        SceneManager.LoadSceneAsync("NameSelector", mode: LoadSceneMode.Additive);
+        SceneManager.LoadSceneAsync("NameSelector", mode: LoadSceneMode.Additive).completed += (asyncOperation) =>
+        {
+            hideAssets();
+        };
         
-        hideAssets();
     }
 
     public void levelSelector()
     {
         GlobalEvents.FullPlaythroughInProgress.uninvoke();
-        SceneManager.LoadSceneAsync("NameSelector", mode: LoadSceneMode.Additive);
+        SceneManager.LoadSceneAsync("NameSelector", mode: LoadSceneMode.Additive).completed += (asyncOperation) => 
+        { 
+            hideAssets();
+        };
 
-        hideAssets();
     }
 
     public void loadCredits()
     {
-        hideAssets();
-        SceneManager.LoadSceneAsync(SceneNames.CREDITS, mode: LoadSceneMode.Additive);
+        SceneManager.LoadSceneAsync(SceneNames.CREDITS, mode: LoadSceneMode.Additive).completed -= (asyncOperation) =>
+        {
+            hideAssets();
+        };
     }
 
     public void loadLeaderBoard()
     {
-        hideAssets();
-        SceneManager.LoadSceneAsync(SceneNames.LEADERBOARD, mode: LoadSceneMode.Additive);
-
+        SceneManager.LoadSceneAsync(SceneNames.LEADERBOARD, mode: LoadSceneMode.Additive).completed += (asyncOperation) => 
+        { 
+            hideAssets();
+        };
     }
 
     private void hideAssets()

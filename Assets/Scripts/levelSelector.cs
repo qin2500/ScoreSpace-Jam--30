@@ -19,7 +19,7 @@ public class levelSelector : MonoBehaviour
         
         if (levelNumber == 0)
         {
-            throw new System.Exception("Tried to select level 0");
+            throw new Exception("Tried to select level 0");
         }
         Debug.Log(levelNumber);
         SceneManager.LoadSceneAsync(SceneNames.LEVELCONTROLLER, mode: LoadSceneMode.Additive).completed += (asyncOperation) =>
@@ -33,8 +33,13 @@ public class levelSelector : MonoBehaviour
 
     public void mainMenu()
     {
-        SceneManager.UnloadSceneAsync(SceneNames.MAINMENU);
-        SceneManager.UnloadSceneAsync(SceneNames.LEVELSELECTOR);
-        SceneManager.LoadSceneAsync("MainMenu", mode: LoadSceneMode.Additive);
+        SceneManager.UnloadSceneAsync(SceneNames.MAINMENU).completed += (asyncOperation) => 
+        {
+           SceneManager.LoadSceneAsync("MainMenu", mode: LoadSceneMode.Additive).completed += (asyncOperation) =>
+           {
+                SceneManager.UnloadSceneAsync(SceneNames.LEVELSELECTOR);
+           };
+        };
+        
     }
 }

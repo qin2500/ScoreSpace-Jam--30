@@ -14,7 +14,7 @@ public class nameSelector : MonoBehaviour
     {
         errorText.gameObject.SetActive(false);
     }
-    public void selectName() 
+    public void selectName()
     {
         if (inputField != null)
         {
@@ -30,20 +30,24 @@ public class nameSelector : MonoBehaviour
 
             GlobalReferences.PLAYER.Username = inputField.text;
             Debug.Log("set name to: " + inputField.text);
-            SceneManager.UnloadSceneAsync(SceneNames.NAMESELECTOR);
-
-            if (GlobalEvents.FullPlaythroughInProgress.Invoked())
+            SceneManager.UnloadSceneAsync(SceneNames.NAMESELECTOR).completed += (asyncOperation) => 
             {
-
-                SceneManager.LoadSceneAsync(SceneNames.LEVELCONTROLLER, mode: LoadSceneMode.Additive).completed += (asyncOperation) =>
+                if (GlobalEvents.FullPlaythroughInProgress.Invoked())
                 {
-                    GlobalReferences.LEVELMANAGER.setLevel(1);
-                };
-                SceneManager.UnloadSceneAsync(SceneNames.MAINMENU);
-                return;
-            }
-            SceneManager.LoadSceneAsync(SceneNames.LEVELSELECTOR, mode:LoadSceneMode.Additive);
 
+                    SceneManager.LoadSceneAsync(SceneNames.LEVELCONTROLLER, mode: LoadSceneMode.Additive).completed += (asyncOperation) =>
+                    {
+                        Debug.Log("loaded level controller");
+                        GlobalReferences.LEVELMANAGER.setLevel(1);
+                        Debug.Log("set level");
+
+                        SceneManager.UnloadSceneAsync(SceneNames.MAINMENU);
+                    };
+                    return;
+
+                }
+                SceneManager.LoadSceneAsync(SceneNames.LEVELSELECTOR, mode: LoadSceneMode.Additive);
+            };
         }
     }
 
@@ -51,5 +55,10 @@ public class nameSelector : MonoBehaviour
     {
         if (input.Length > 10 || input.Length < 3) return false;
         return true;
+    }
+
+    public void mainMenu() 
+    { 
+        
     }
 }

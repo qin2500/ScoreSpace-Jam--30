@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     bool facingRight = true;
     bool jumpRequested;
 
+    private Vector2 paused_velocity = Vector2.zero;
+
 
     private void Awake()
     {
@@ -63,6 +65,11 @@ public class PlayerController : MonoBehaviour
             jumpRequested = true;
         }
 
+        if ((gravityObject.getCurrentAttractor() == null)) {
+            freeMove = false;
+            return;
+        }
+
         float distance = ((Vector2)gravityObject.getCurrentAttractor().planetTransform.position - m_rigidbody.position).magnitude;
         if (distance > freeMoveLimit)
         {
@@ -74,9 +81,16 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         if (GlobalEvents.PlayerPause.Invoked()) 
-        { 
+        {
+            if (paused_velocity == Vector2.zero) paused_velocity = m_rigidbody.velocity;
             m_rigidbody.velocity = Vector2.zero;
+
             return; 
+        }
+        if (paused_velocity != Vector2.zero)
+        {
+            m_rigidbody.velocity = paused_velocity;
+            paused_velocity = Vector2.zero;
         }
         if (gravityObject.getCurrentAttractor() != null && isGrounded)
         {
