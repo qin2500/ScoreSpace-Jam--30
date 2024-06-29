@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
 {
     void Start()
     {
-        LootLockerSDKManager.Init("dev_170057ab23ba40ea9470fae2d724b339", "1.0", "furzi6jl");
         LootLockerSDKManager.StartGuestSession((response) =>
         {
             if (!response.success)
